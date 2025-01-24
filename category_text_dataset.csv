@@ -1,0 +1,527 @@
+Category,Term
+Harmful,mutilation
+Harmful,torture
+Harmful,destruction
+Harmful,dismemberment
+Harmful,abandonment
+Harmful,oppression
+Harmful,cruelty
+Harmful,grief
+Harmful,suffering
+Harmful,sadism
+Harmful,chaos
+Harmful,violation
+Harmful,wound
+Harmful,poison
+Harmful,neglect
+Harmful,hostility
+Harmful,damage
+Harmful,injury
+Harmful,repression
+Harmful,deprivation
+Harmful,rape
+Harmful,trafficking
+Harmful,poverty
+Harmful,slavery
+Harmful,abduction
+Harmful,desolate
+Harmful,murderous
+Harmful,crushing
+Harmful,incapacitate
+Harmful,savagery
+Harmful,psychological abuse
+Harmful,threatening
+Harmful,defamation
+Harmful,hurtful
+Harmful,dangerous
+Harmful,ravage
+Harmful,hostility
+Harmful,inhumane
+Harmful,disabling
+Harmful,blow
+Harmful,murder
+Harmful,violent act
+Harmful,destruction
+Harmful,infliction
+Harmful,misanthropy
+Harmful,tragedy
+Harmful,collapse
+Harmful,prejudice
+Harmful,abuse
+Harmful,violence
+Harmful,bullying
+Harmful,harassment
+Harmful,attack
+Harmful,hurt
+Spam,hurry up
+Spam,act now
+Spam,limited stock
+Spam,only today
+Spam,quick offer
+Spam,last chance
+Spam,time's running out
+Spam,exclusive
+Spam,special offer
+Spam,today only
+Spam,clearance sale
+Spam,special promotion
+Spam,don't miss out
+Spam,instant access
+Spam,free gift
+Spam,reserve now
+Spam,unbeatable offer
+Spam,limited supply
+Spam,free download
+Spam,unlimited access
+Spam,save today
+Spam,instant win
+Spam,extra discount
+Spam,guaranteed results
+Spam,bonus offer
+Spam,hot deal
+Spam,order now
+Spam,act fast
+Spam,super offer
+Spam,bargain
+Spam,cash prize
+Spam,limited seats
+Spam,free subscription
+Spam,first 100 buyers
+Spam,flash sale
+Spam,final chance
+Spam,exclusive deal
+Spam,limited time offer
+Spam,discounted price
+Spam,free bonus
+Spam,order within
+Spam,best offer
+Spam,today’s deal
+Spam,unbeatable price
+Spam,only for you
+Spam,get it now
+Spam,exclusive savings
+Spam,take action
+Spam,buy now
+Spam,free
+Spam,limited offer
+Spam,click here
+Spam,win
+Spam,earn money
+Negative,miserable
+Negative,hopeless
+Negative,worthless
+Negative,regretful
+Negative,bitter
+Negative,dejected
+Negative,unfortunate
+Negative,dreary
+Negative,pessimistic
+Negative,desolate
+Negative,unfortunate
+Negative,downhearted
+Negative,sorrowful
+Negative,gloomy
+Negative,disillusioned
+Negative,apathetic
+Negative,apathetic
+Negative,defeatist
+Negative,grief-stricken
+Negative,helpless
+Negative,empty
+Negative,unfulfilled
+Negative,resentful
+Negative,unrelieved
+Negative,melancholy
+Negative,dismal
+Negative,sick
+Negative,lonely
+Negative,morose
+Negative,defeated
+Negative,empty
+Negative,oppressed
+Negative,indifferent
+Negative,forlorn
+Negative,desperate
+Negative,agonizing
+Negative,unsatisfied
+Negative,distraught
+Negative,unhappy
+Negative,distressed
+Negative,downcast
+Negative,somber
+Negative,woe
+Negative,sadness
+Negative,lamentable
+Negative,frustrated
+Negative,discontent
+Negative,abysmal
+Negative,bad
+Negative,worst
+Negative,hate
+Negative,angry
+Negative,unhappy
+Negative,dislike
+Positive,uplifted
+Positive,elated
+Positive,successful
+Positive,inspired
+Positive,grateful
+Positive,optimistic
+Positive,beaming
+Positive,fortunate
+Positive,blessed
+Positive,cheerful
+Positive,energetic
+Positive,content
+Positive,radiant
+Positive,euphoric
+Positive,motivated
+Positive,joyful
+Positive,blissful
+Positive,peaceful
+Positive,excited
+Positive,elated
+Positive,supportive
+Positive,enthusiastic
+Positive,grinning
+Positive,happy-go-lucky
+Positive,thrilled
+Positive,hopeful
+Positive,empowered
+Positive,overjoyed
+Positive,affectionate
+Positive,serene
+Positive,accomplished
+Positive,cheerful
+Positive,lucky
+Positive,blissful
+Positive,inspiring
+Positive,refreshing
+Positive,heartwarming
+Positive,dreamy
+Positive,joyous
+Positive,brightened
+Positive,appreciative
+Positive,optimistic
+Positive,vibrant
+Positive,rejoicing
+Positive,successful
+Positive,lively
+Positive,fulfilled
+Positive,energetic
+Positive,delighted
+Positive,good
+Positive,happy
+Positive,love
+Positive,like
+Positive,joy
+Positive,excellent
+Neutral,standard
+Neutral,average
+Neutral,routine
+Neutral,ordinary
+Neutral,equilibrium
+Neutral,mild
+Neutral,balanced
+Neutral,average
+Neutral,casual
+Neutral,consistent
+Neutral,unspectacular
+Neutral,even
+Neutral,unremarkable
+Neutral,composed
+Neutral,placid
+Neutral,settled
+Neutral,calm
+Neutral,modest
+Neutral,fine
+Neutral,unimpressive
+Neutral,indifferent
+Neutral,neutralized
+Neutral,unambitious
+Neutral,level-headed
+Neutral,predictable
+Neutral,stable
+Neutral,unnoticed
+Neutral,unperturbed
+Neutral,mediocre
+Neutral,subdued
+Neutral,normal
+Neutral,nothing special
+Neutral,gentle
+Neutral,cool
+Neutral,docile
+Neutral,carefree
+Neutral,nonreactive
+Neutral,steady
+Neutral,unaffected
+Neutral,unmoved
+Neutral,relaxed
+Neutral,unassuming
+Neutral,calm
+Neutral,peaceful
+Neutral,moderate
+Neutral,unflappable
+Neutral,unexaggerated
+Neutral,serene
+Neutral,unbiased
+Neutral,unexcited
+Neutral,okay
+Neutral,fine
+Neutral,neutral
+Neutral,normal
+Safe,protected
+Safe,stable
+Safe,reliable
+Safe,dependable
+Safe,sanitary
+Safe,shielded
+Safe,impervious
+Safe,defensible
+Safe,trustworthy
+Safe,guarded
+Safe,unscathed
+Safe,shielded
+Safe,harmless
+Safe,uninjured
+Safe,secure
+Safe,unharmed
+Safe,sound
+Safe,unthreatened
+Safe,unassailable
+Safe,steady
+Safe,preserved
+Safe,uncontaminated
+Safe,safe and sound
+Safe,trustworthy
+Safe,clean
+Safe,survivable
+Safe,non-hazardous
+Safe,protected
+Safe,steady
+Safe,defended
+Safe,risk-free
+Safe,shielded
+Safe,securely
+Safe,sure
+Safe,valid
+Safe,insulated
+Safe,safeguarded
+Safe,invulnerable
+Safe,securely protected
+Safe,no risk
+Safe,unthreatened
+Safe,verified
+Safe,unbroken
+Safe,whole
+Safe,stable
+Safe,safe
+Safe,secure
+Safe,protected
+Safe,healthy
+Real,legitimate
+Real,true
+Real,unfabricated
+Real,undisputed
+Real,substantial
+Real,genuine
+Real,verifiable
+Real,honest
+Real,accurate
+Real,unquestionable
+Real,authentic
+Real,credible
+Real,factual
+Real,valid
+Real,reliable
+Real,actual
+Real,unchallenged
+Real,unmistakable
+Real,legit
+Real,true-to-life
+Real,correct
+Real,verifiable
+Real,substantive
+Real,factual
+Real,trustworthy
+Real,confirmed
+Real,unfeigned
+Real,confirmed
+Real,authentic
+Real,precise
+Real,unadulterated
+Real,proven
+Real,realistic
+Real,unspurious
+Real,verified
+Real,documented
+Real,dependable
+Real,clear
+Real,unfiltered
+Real,bona fide
+Real,real-life
+Real,undeniable
+Real,transparent
+Real,validated
+Real,unconcealed
+Real,substantive
+Real,substantially real
+Real,authentic
+Real,genuine
+Real,real
+Real,truthful
+Fake,false
+Fake,artificial
+Fake,deceptive
+Fake,forged
+Fake,counterfeit
+Fake,phony
+Fake,fraudulent
+Fake,sham
+Fake,unreal
+Fake,imitation
+Fake,falsehood
+Fake,hoax
+Fake,untrue
+Fake,misleading
+Fake,pretend
+Fake,falsified
+Fake,bogus
+Fake,unverified
+Fake,counterfeit
+Fake,false claims
+Fake,deceiving
+Fake,dishonest
+Fake,untrustworthy
+Fake,misrepresentation
+Fake,fake news
+Fake,unreal
+Fake,disguised
+Fake,incorrect
+Fake,sham
+Fake,unsubstantial
+Fake,phony
+Fake,manipulated
+Fake,untrue
+Fake,incorrect
+Fake,doctored
+Fake,fabricated
+Fake,spurious
+Fake,bogus
+Fake,dishonest
+Fake,unconfirmed
+Fake,unsubstantiated
+Fake,undocumented
+Fake,inaccurate
+Fake,inconclusive
+Fake,unreliable
+Fake,dishonestly altered
+Fake,fake
+Fake,fraud
+Fake,false
+Fake,hoax
+Fake,scam
+Fake,misleading
+Hate Speech,racist
+Hate Speech,prejudiced
+Hate Speech,sexist
+Hate Speech,bigot
+Hate Speech,homophobic
+Hate Speech,intolerant
+Hate Speech,discriminatory
+Hate Speech,hateful
+Hate Speech,violent
+Hate Speech,offensive
+Hate Speech,derogatory
+Hate Speech,hostile
+Hate Speech,insulting
+Hate Speech,misogynistic
+Hate Speech,xenophobic
+Hate Speech,unaccepting
+Hate Speech,oppressive
+Hate Speech,chauvinistic
+Hate Speech,disrespectful
+Hate Speech,abusive
+Hate Speech,discriminative
+Hate Speech,bigotry
+Hate Speech,exclusive
+Hate Speech,hurtful
+Hate Speech,contemptuous
+Hate Speech,horrifying
+Hate Speech,aggressive
+Hate Speech,noninclusive
+Hate Speech,prejudicial
+Hate Speech,scornful
+Hate Speech,disdainful
+Hate Speech,resentful
+Hate Speech,demeaning
+Hate Speech,degrading
+Hate Speech,disparaging
+Hate Speech,insensitive
+Hate Speech,prejudiced
+Hate Speech,derisive
+Hate Speech,condescending
+Hate Speech,vitriolic
+Hate Speech,villainous
+Hate Speech,discrediting
+Hate Speech,destructive
+Hate Speech,unforgiving
+Hate Speech,slanderous
+Hate Speech,aggressive
+Hate Speech,racism
+Hate Speech,xenophobia
+Hate Speech,sexism
+Hate Speech,homophobia
+Non-Hate Speech,inclusive
+Non-Hate Speech,tolerant
+Non-Hate Speech,respectful
+Non-Hate Speech,accepting
+Non-Hate Speech,understanding
+Non-Hate Speech,welcoming
+Non-Hate Speech,friendly
+Non-Hate Speech,compassionate
+Non-Hate Speech,positive
+Non-Hate Speech,respecting
+Non-Hate Speech,loving
+Non-Hate Speech,supportive
+Non-Hate Speech,open-minded
+Non-Hate Speech,humble
+Non-Hate Speech,sympathetic
+Non-Hate Speech,generous
+Non-Hate Speech,courteous
+Non-Hate Speech,nonjudgmental
+Non-Hate Speech,thoughtful
+Non-Hate Speech,gentle
+Non-Hate Speech,helpful
+Non-Hate Speech,broad-minded
+Non-Hate Speech,nonprejudiced
+Non-Hate Speech,welcoming
+Non-Hate Speech,mindful
+Non-Hate Speech,cooperative
+Non-Hate Speech,open
+Non-Hate Speech,considerate
+Non-Hate Speech,generous
+Non-Hate Speech,tender-hearted
+Non-Hate Speech,affectionate
+Non-Hate Speech,peaceful
+Non-Hate Speech,compassionate
+Non-Hate Speech,forgiving
+Non-Hate Speech,considerate
+Non-Hate Speech,accepting
+Non-Hate Speech,embracing
+Non-Hate Speech,empathetic
+Non-Hate Speech,welcoming
+Non-Hate Speech,tolerable
+Non-Hate Speech,careful
+Non-Hate Speech,approachable
+Non-Hate Speech,caring
+Non-Hate Speech,heartwarming
+Non-Hate Speech,gentle
+Non-Hate Speech,polite
+Non-Hate Speech,respectful
+Non-Hate Speech,unprejudiced
+Non-Hate Speech,non-hostile
+Non-Hate Speech,inclusive
+Non-Hate Speech,tolerant
+Non-Hate Speech,respectful
+Non-Hate Speech,accepting
