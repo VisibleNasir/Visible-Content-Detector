@@ -26,10 +26,10 @@ def classify_text(text):
 
 # CLI Loop
 if __name__ == "__main__":
-    print("🚀 Harmful Content Detector | Text Classifier")
+    print(" Harmful Content Detector | Text ")
     while True:
-        text = input("\n📝 Enter text to classify (or type 'exit'): ")
+        text = input("\n Enter text to classify : ")
         if text.lower() == "exit":
             break
         result = classify_text(text)
-        print(f"🔎 Predicted Category: {result}")
+        print(f"Predicted Category: {result}")
