@@ -1,39 +1,74 @@
 # Online Harmful Content Detection
 
-## Project Overview
-
-This project aims to detect harmful content across images, text, and videos. It leverages machine learning models to classify content as either harmful or safe. The application features a user-friendly frontend built with the **MERN stack** (MongoDB, Express, React, Node.js), **TypeScript**, and **Tailwind CSS**, while the machine learning models for text, image, and video detection are developed using **Python**.
+## Description
+**Online Harmful Content Detection** is an AI-powered web application designed to detect harmful or unsafe content in **text, images, and videos**. It leverages machine learning and deep learning models to identify potentially offensive, toxic, or harmful material and promotes safer online experiences. This platform is ideal for integrating into moderation systems for social media, forums, and other user-generated content platforms.
 
 ## Features
-
-- **Image Harmful Content Detection**: Uses a deep learning model to classify images as harmful or safe.
-- **Text Harmful Content Detection**: Implements a text classifier to detect harmful content in textual input.
-- **Video Harmful Content Detection**: Detects harmful content within video files (e.g., images or text within videos).
-- **User Interface**: Built with **React** (in **TypeScript**) and styled with **Tailwind CSS** for a responsive and clean design.
-- **Backend**: Built with **Node.js** and **Express**, handling requests for content detection and model inference.
+- **Text Detection**  
+  - Instantly analyzes written content to identify harmful language.
+- **Image Detection**  
+  - Upload images to detect inappropriate or offensive content using a trained deep learning model.
+- **Video Detection**  
+  - Scan uploaded video files for any frames containing unsafe visual material.
+- **User-Friendly UI**  
+  - Clean, dark-themed interface built for intuitive interaction.
+- **Fast API Integration**  
+  - Efficient backend APIs for seamless model predictions and real-time feedback.
 
 ## Tech Stack
+- **Frontend:** React, Tailwind CSS, TypeScript, ShadCN UI  
+- **Backend:** FastAPI, Python, TensorFlow, OpenCV  
+- **Models:** Naive Bayes (Text), CNN-based Image Classifier (Image), Frame Sampling + Image Detection (Video)  
+- **Deployment:** Vercel (Frontend), Render (Backend/API)
 
-- **Frontend**:
-  - **React** (with TypeScript)
-  - **Tailwind CSS**
-  - **Axios** for API calls
-- **Backend**:
-  - **Node.js**
-  - **Express**
-  - **MongoDB** for database storage
-- **Machine Learning Models**:
-  - **Python**
-  - **TensorFlow** for deep learning models
-  - **scikit-learn** for text classification
-- **Deployment**: (Optional, add your deployment details here)
+## Repository
+🔗 GitHub: [https://github.com/VisibleNasir/OnlineHarmfullContentDetection](https://github.com/VisibleNasir/OnlineHarmfullContentDetection)
 
 ## Installation
 
-### Prerequisites
+To set up the project locally, follow these steps:
 
-- **Node.js** and **npm** (or **yarn**)
-- **Python** (3.8 recommended)
-- **MongoDB** (for local development or MongoDB Atlas for cloud database)
-- **pip** (Python package manager)
+### 1. **Fork the Repository**
+- Go to the repository: [Online Harmful Content Detection](https://github.com/VisibleNasir/OnlineHarmfullContentDetection)
+- Click the **Fork** button on the top-right corner to create your copy.
 
+### 2. **Clone the Project via GitHub Desktop**
+- Click the **Code** button.
+- Choose **Open with GitHub Desktop**.
+- In GitHub Desktop, click **Clone** to download the project.
+
+### 3. **Open the Project in Visual Studio Code**
+- In GitHub Desktop, click **Open in Visual Studio Code**.
+
+### 4. **Install Frontend Dependencies**
+```bash
+cd frontend
+npm install
+```
+
+### 5. **Run the Frontend**
+```bash
+npm run dev
+```
+- Open the browser using the local URL (e.g., `http://localhost:3000`).
+
+### 7. **Add Remote URL**
+```bash
+git remote add upstream <original-repository-link>
+```
+
+### 8. **Check Remotes**
+```bash
+git remote -v
+```
+
+## Contribution Guidelines
+- Fork the repo and make changes in a new branch.
+- Use clear, concise commit messages.
+- Create pull requests with details of your contribution.
+- Collaborate and discuss before implementing large changes.
+
+## Contact
+For suggestions, collaboration, or queries:
+- 📧 GitHub: [@VisibleNasir](https://github.com/VisibleNasir)
+- Or connect via your college/community channels.
