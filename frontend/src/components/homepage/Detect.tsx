@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import { ShinyButton } from "@/components/magicui/shiny-button";
 
 const Detect = () => {
     const [textResult, setTextResult] = useState("")
@@ -44,12 +44,9 @@ const Detect = () => {
       </CardContent>
     </div>
     <CardFooter className="flex justify-end p-4">
-      <Button
-        className="px-6 py-2 text-xl"
-        onClick={() => setTextResult("No harmful content found")}
-      >
-        Detect
-      </Button>
+  
+      <ShinyButton className="px-6 py-2 text-xl"
+        onClick={() => setTextResult("No harmful content found")}>Detect</ShinyButton>
     </CardFooter>
   </Card>
 
@@ -78,12 +75,8 @@ const Detect = () => {
       </CardContent>
     </div>
     <CardFooter className="flex justify-end p-4">
-      <Button
-        className="px-6 py-2 text-xl"
-        onClick={() => setImageResult("Image is safe")}
-      >
-        Detect
-      </Button>
+      <ShinyButton className="px-6 py-2 text-xl"
+        onClick={() => setImageResult("Image is safe")}>Detect</ShinyButton>
     </CardFooter>
   </Card>
 
@@ -112,12 +105,8 @@ const Detect = () => {
       </CardContent>
     </div>
     <CardFooter className="flex justify-end p-4">
-      <Button
-        className="px-6 py-2 text-xl"
-        onClick={() => setVideoResult("No harmful content found in video")}
-      >
-        Detect
-      </Button>
+      <ShinyButton  className="px-6 py-2 text-xl"
+        onClick={() => setVideoResult("No harmful content found in video")}>Detect</ShinyButton>
     </CardFooter>
   </Card>
 </div>

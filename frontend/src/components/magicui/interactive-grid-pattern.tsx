@@ -42,7 +42,7 @@ export function InteractiveGridPattern({
       width={width * horizontal}
       height={height * vertical}
       className={cn(
-        "absolute inset-0 h-full w-full border border-gray-400/40",
+        "absolute inset-0 h-full w-full border border-gray-400/30",
         className,
       )}
       {...props}
@@ -70,4 +70,3 @@ export function InteractiveGridPattern({
     </svg>
   );
 }
-
