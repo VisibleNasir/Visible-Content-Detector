@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import Detect from "./homepage/Detect";
-
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
 import {
@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { HarmfulDetectionFeatureGrid } from "./homepage/bentoDemo";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const Homepage = () => {
                   className="text-white text-lg font-semibold cursor-pointer"
                   onClick={() => navigate("/songs")}
                 >
-                  Songs
+                  History
                 </li>
               </div>
               <div>
@@ -117,7 +118,7 @@ const Homepage = () => {
                 toggleMobileMenu();
               }}
             >
-              Songs
+              History
             </li>
             <li
               className="text-white text-lg font-semibold cursor-pointer"
@@ -139,20 +140,57 @@ const Homepage = () => {
           ></div>
         )}
 
-        <div className="flex flex-col grid-cols-2 items-center justify-center text-white">
-          <div className="relative flex h-[100px] w-1/2 flex-col items-center justify-center   bg-background">
-            <h1 className="text-4xl md:text-4xl lg:text-5xl font-semibold max-w-7xl mx-auto text-center relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-zinc-700 via-white to-zinc-700 dark:from-white dark:via-white dark:to-zinc-700">
-              Protect Minds From Harm ! <br />
-            </h1>
-            <InteractiveGridPattern
-              className={cn(
-                "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
-                "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
-              )}
-            />
-          </div>
-          <Detect />
-        </div>
+<div className="flex flex-col items-center justify-center text-white min-h-screen w-full relative">
+  <div className="relative flex h-full w-full flex-col items-center justify-center bg-background">
+    <h1 className="text-4xl md:text-4xl lg:text-5xl font-semibold max-w-7xl   py-6 bg-clip-text text-transparent bg-gradient-to-b from-zinc-700 via-white to-zinc-700 dark:from-white dark:via-white dark:to-zinc-700">
+      Protect Minds From Harm! <br />
+    </h1>
+
+    <InteractiveGridPattern
+      className={cn(
+        "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+        "inset-y-[-300%] h-[570%] skew-y-12"
+      )}
+    />
+
+    {/* Scroll Down Indicator */}
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 1,
+        repeat: Infinity,
+        repeatType: "reverse",
+      }}
+      className="absolute top-50 z-30 flex flex-col items-center"
+    >
+      <p className="text-white text-sm mb-2">Scroll Down</p>
+      <svg
+        className="w-6 h-6 text-white animate-bounce"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+    </motion.div>
+  </div>
+</div>
+
+<div className="flex flex-col items-center justify-center text-white min-h-screen w-full gap-20">
+  <div className="flex flex-col items-center justify-center text-white">
+    <h1 className="text-4xl md:text-4xl lg:text-5xl font-semibold max-w-7xl mx-auto text-center relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-zinc-700 via-white to-zinc-700 dark:from-white dark:via-white dark:to-zinc-700">
+      Detect it !<br />
+    </h1>
+    <Detect />
+  </div>
+
+  <div className="flex flex-col items-center justify-center text-white">
+    <HarmfulDetectionFeatureGrid />
+  </div>
+</div>
+
         <div className="flex align-center justify-center  text-white ">
           <Accordion type="single" collapsible className="w-1/2">
             <AccordionItem value="item-1">
