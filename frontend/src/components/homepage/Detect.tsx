@@ -18,9 +18,9 @@ const Detect = () => {
     const [videoResult, setVideoResult] = useState("")
   
     return (
-        <div className="flex flex-wrap justify-center gap-12 mt-8 px-4">
+        <div className="flex flex-wrap justify-center gap-12 mt-8 px-4 w-full " >
   {/* Text Detection */}
-  <Card className="w-[350px] min-h-[500px] bg-zinc-950 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
+  <Card className="w-[350px] min-h-[500px] bg-zinc-900 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
     <div>
       <CardHeader>
         <CardTitle className="text-2xl font-semibold">Text Detection</CardTitle>
@@ -33,7 +33,7 @@ const Detect = () => {
             id="text"
             rows={6}
             placeholder="Paste your content here..."
-            className="bg-zinc-900 text-white h-42 "
+            className="bg-zinc-800 text-white h-42 "
           />
         </div>
         {textResult && (
@@ -51,7 +51,7 @@ const Detect = () => {
   </Card>
 
   {/* Image Detection */}
-  <Card className="w-[350px] min-h-[500px] bg-zinc-950 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
+  <Card className="w-[350px] min-h-[500px] bg-zinc-900 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
     <div>
       <CardHeader>
         <CardTitle className="text-2xl font-semibold">Image Detection</CardTitle>
@@ -64,7 +64,7 @@ const Detect = () => {
             id="image"
             type="file"
             accept="image/*"
-            className="bg-zinc-900 text-white h-30 file:text-black file:bg-purple-200 file:px-6 file:rounded-md "
+            className="bg-zinc-800 text-white h-30 file:text-black file:bg-purple-200 file:px-6 file:rounded-md "
           />
         </div>
         {imageResult && (
@@ -81,7 +81,7 @@ const Detect = () => {
   </Card>
 
   {/* Video Detection */}
-  <Card className="w-[350px] min-h-[500px] bg-zinc-950 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
+  <Card className="w-[350px] min-h-[500px] bg-zinc-900 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
     <div>
       <CardHeader>
         <CardTitle className="text-2xl font-semibold">Video Detection</CardTitle>
@@ -94,7 +94,7 @@ const Detect = () => {
             id="video"
             type="file"
             accept="video/*"
-            className="bg-zinc-900 text-white h-30 file:text-black file:bg-purple-200 file:px-6 file:rounded-md"
+            className="bg-zinc-800 text-white h-30 file:text-black file:bg-purple-200 file:px-6 file:rounded-md"
           />
         </div>
         {videoResult && (
