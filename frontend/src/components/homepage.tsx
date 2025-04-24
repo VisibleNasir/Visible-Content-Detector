@@ -54,6 +54,7 @@ const Homepage = () => {
                 >
                   {label}
                 </li>
+                
               ))}
             </ul>
           </div>

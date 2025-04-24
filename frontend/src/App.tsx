@@ -1,8 +1,8 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
 import './App.css'
 import Homepage from './components/homepage'
-import Songs from './components/Songs/Songs'
-import { Contact } from 'lucide-react'
+import History from './components/History/History'
+import Contact from './components/Contact/contact'
 
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/detect" element={<Homepage />} />
-        <Route path="/songs" element={<Songs/>} />
-        <Route path="/contact" element={<Contact/>} />
+        <Route path="/history" element={<History/>} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>
     </>
