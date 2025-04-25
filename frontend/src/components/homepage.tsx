@@ -10,7 +10,7 @@ import { Upload, BrainCircuit, BarChart3 } from "lucide-react";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
 import {
   Accordion,
-  AccordionContent,
+  AccordionContent,      
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
@@ -26,7 +26,7 @@ const Homepage = () => {
 
   return (
     <>
-      <div className="bg-black min-h-screen w-screen flex flex-col">
+      <div className="bg-black min-h-screen w-screen flex flex-col ">
         {/* Navbar */}
         <div className="grid-cols-1 bg-zinc-950 sticky top-0 z-50 flex justify-between items-start w-full px-10 py-3">
           <div className="flex items-center gap-2 h-16">
