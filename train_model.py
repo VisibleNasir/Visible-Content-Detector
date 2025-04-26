@@ -17,22 +17,21 @@ nltk.download('stopwords')
 # Load dataset
 df = pd.read_csv("text_dataset.csv")
 
-# Preprocessing
 def clean_text(text):
     text = text.lower()
-    text = re.sub(r"http\S+", "", text)  # remove URLs
-    text = text.translate(str.maketrans('', '', string.punctuation))  # remove punctuation
+    text = re.sub(r"http\S+", "", text)  
+    text = text.translate(str.maketrans('', '', string.punctuation))
     text = " ".join([word for word in text.split() if word not in stopwords.words('english')])
     return text
 
 df["clean_text"] = df["text"].apply(clean_text)
 
-# Split data
+
 X = df["clean_text"]
 y = df["label"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Vectorization
+
 vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1,2))
 X_train_vec = vectorizer.fit_transform(X_train)
 X_test_vec = vectorizer.transform(X_test)
@@ -68,4 +67,4 @@ plt.ylabel("Actual")
 plt.tight_layout()
 plt.savefig("confusion_matrix.png")
 
-print("✅ Model, vectorizer, and visual reports saved.")
+print("Model Trained Successfully!")
