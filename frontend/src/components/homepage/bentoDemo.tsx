@@ -158,10 +158,10 @@ const features = [
     name: "Content Analyzer",
     description: "Upload any file to scan for harmful content using AI.",
     className: "col-span-3 lg:col-span-1",
-    href: "/analyze",
+    href: "/",
     cta: "Scan now",
     background: (
-      <div className="absolute right-0 top-10 flex h-full w-full items-center justify-center">
+      <div  className="absolute right-0 top-10 flex h-full w-full items-center justify-center">
         <div className="rounded-xl bg-gradient-to-br from-red-500/30 to-yellow-500/30 p-6 text-center shadow-lg backdrop-blur-sm">
           <p className="text-sm font-semibold text-white">
             Drag & drop or select a file
