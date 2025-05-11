@@ -2,7 +2,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import {useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Detect from "./homepage/Detect";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -23,8 +23,7 @@ const Homepage = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-    const detectSectionRef = useRef<HTMLDivElement>(null); // 👈 Ref to Detect section
-
+  const detectSectionRef = useRef<HTMLDivElement>(null); // 👈 Ref to Detect section
 
   const scrollToDetect = () => {
     detectSectionRef.current?.scrollIntoView({ behavior: "smooth" }); // 👈 Scroll
@@ -34,28 +33,28 @@ const Homepage = () => {
     <>
       <div className="bg-zinc-950 min-h-screen w-screen flex flex-col ">
         {/* Navbar */}
-        <div className="grid-cols-1 bg-zinc-950 sticky top-0 z-50 flex justify-between items-start w-full px-10 py-3">
-          <div className="flex items-center gap-2 h-16">
-            <img src="./logo.png" alt="logo" className="w-10 h-8" />
-            <div className="logo text-white text-xl font-bold cursor-pointer">
-              Harmful Content Detector
+        <div className="sticky top-0 z-50 w-full bg-white shadow-sm">
+          <nav className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+            {/* Logo Section */}
+            <div
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              <img
+                src="./logo.png"
+                alt="logo"
+                className="w-10 h-10 object-contain"
+              />
+              <span className="text-xl font-bold text-zinc-800 tracking-wide">
+                Harmful Detector
+              </span>
             </div>
-          </div>
 
-          {/* Mobile menu toggle */}
-          <div className="md:hidden">
-            <button onClick={toggleMobileMenu} className="text-white p-2">
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="nav-links hidden md:flex justify-between items-center w-1/2 pr-40 h-16">
-            <ul className="flex justify-between items-center w-full md:text-2xl lg:text-4xl">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-10 text-zinc-700 font-medium text-lg">
               {["Home", "Detect", "History", "Contact"].map((label, index) => (
-                <li
+                <button
                   key={index}
-                  className="text-white text-lg font-semibold cursor-pointer"
                   onClick={() =>
                     navigate(
                       `/${
@@ -65,52 +64,62 @@ const Homepage = () => {
                       }`
                     )
                   }
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <div className="md:hidden">
+              <button onClick={toggleMobileMenu} className="text-zinc-800">
+                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            </div>
+          </nav>
+
+          {/* Mobile Menu */}
+          <div
+            className={`fixed top-0 right-0 h-full w-64 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+              isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            } md:hidden`}
+          >
+            <div className="flex justify-end p-4">
+              <button onClick={toggleMobileMenu} className="text-zinc-800">
+                <X size={28} />
+              </button>
+            </div>
+            <ul className="flex flex-col px-6 space-y-6 mt-10 text-lg font-semibold text-zinc-800">
+              {["Home", "Detect", "History", "Contact"].map((label, index) => (
+                <li
+                  key={index}
+                  className="hover:text-blue-600 transition-colors cursor-pointer"
+                  onClick={() => {
+                    navigate(
+                      `/${
+                        label.toLowerCase() === "home"
+                          ? ""
+                          : label.toLowerCase()
+                      }`
+                    );
+                    toggleMobileMenu();
+                  }}
                 >
                   {label}
                 </li>
               ))}
             </ul>
           </div>
-        </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`fixed top-0 right-0 h-full bg-black w-64 z-50 transform transition-transform duration-300 ease-in-out ${
-            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          } md:hidden`}
-        >
-          <div className="flex justify-end p-4">
-            <button onClick={toggleMobileMenu} className="text-white">
-              <X size={24} />
-            </button>
-          </div>
-          <ul className="flex flex-col p-4 space-y-6">
-            {["Home", "Detect", "History", "Contact"].map((label, index) => (
-              <li
-                key={index}
-                className="text-white text-lg font-semibold cursor-pointer"
-                onClick={() => {
-                  navigate(
-                    `/${
-                      label.toLowerCase() === "home" ? "" : label.toLowerCase()
-                    }`
-                  );
-                  toggleMobileMenu();
-                }}
-              >
-                {label}
-              </li>
-            ))}
-          </ul>
+          {/* Overlay */}
+          {isMobileMenuOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
+              onClick={toggleMobileMenu}
+            />
+          )}
         </div>
-
-        {/* Overlay */}
-        {isMobileMenuOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-            onClick={toggleMobileMenu}
-          />
-        )}
 
         {/* Hero Section */}
         <div className="flex flex-col items-center justify-center text-white min-h-screen w-lvw relative">
@@ -133,10 +142,10 @@ const Homepage = () => {
                 repeatType: "reverse",
               }}
               className="absolute top-50 z-30 flex flex-col items-center cursor-pointer"
-              onClick={scrollToDetect} 
+              onClick={scrollToDetect}
             >
               <p className="text-white text-sm mb-2">Scroll Down</p>
-              <svg 
+              <svg
                 className="w-6 h-6 text-white animate-bounce"
                 fill="none"
                 stroke="currentColor"
@@ -144,7 +153,6 @@ const Homepage = () => {
                 viewBox="0 0 24 24"
               >
                 <path
-                
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   d="M19 9l-7 7-7-7"
@@ -155,8 +163,11 @@ const Homepage = () => {
         </div>
 
         {/* Detect Section */}
-        
-        <div ref={detectSectionRef} className="flex flex-col items-center justify-center text-white min-h-screen w-full gap-20">
+
+        <div
+          ref={detectSectionRef}
+          className="flex flex-col items-center justify-center text-white min-h-screen w-full gap-20"
+        >
           <div className="flex flex-col items-center w-full bg-gradient-to-br from-zinc-900 to-zinc-950  ">
             <h1 className="text-4xl md:text-4xl mt-19 lg:text-5xl font-semibold py-6 text-transparent bg-clip-text bg-gradient-to-b from-zinc-700 via-white to-zinc-700">
               Detect it !
@@ -243,7 +254,7 @@ const Homepage = () => {
             Start detecting harmful content with our AI now.
           </p>
           <button
-            onClick={scrollToDetect} 
+            onClick={scrollToDetect}
             className="bg-yellow-200 hover:cursor-pointer text-black px-6 py-3 rounded-xl font-semibold hover:bg-yellow-300 transition-all"
           >
             Try Now
