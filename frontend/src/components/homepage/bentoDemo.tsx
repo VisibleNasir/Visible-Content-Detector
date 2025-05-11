@@ -58,9 +58,9 @@ const statusColors = {
     text: "text-green-700",
   },
   warning: {
-    bg: "bg-yellow-100",
-    border: "border-yellow-300",
-    text: "text-yellow-700",
+    bg: "bg-red-400",
+    border: "border-red-700",
+    text: "text-zinc-950",
   },
 };
 

@@ -31,6 +31,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",
     "accordion": "^3.0.2",
+    "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
@@ -49,11 +50,12 @@
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
     "tooltip": "^1.6.1",
-    "update": "^0.7.4",
+    "update": "^0.4.2",
     "upgrade": "^1.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
+    "@types/axios": "^0.9.36",
     "@types/node": "^22.14.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.2",

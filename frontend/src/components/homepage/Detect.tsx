@@ -12,53 +12,63 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ShinyButton } from "@/components/magicui/shiny-button";
 
+import axios from "axios";
 const Detect = () => {
-  const [textResult, setTextResult] = useState("");
   const [imageResult, setImageResult] = useState("");
   const [videoResult, setVideoResult] = useState("");
+  const [text, setText] = useState("");
+  const [textResult, setTextResult] = useState("");
+
+  const handleTextDetect = async () => {
+    try {
+      const response = await axios.post<{ result: string }>("http://localhost:3000/predict-text", {
+        text,
+      });
+      setTextResult(response.data.result);
+    } catch (error) {
+      console.error("Error detecting text:", error);
+      setTextResult("Error processing request.");
+    }
+  };
 
   return (
     <div className="flex flex-wrap justify-center gap-12 mt-8 px-4 w-full ">
       {/* Text Detection */}
       <Card className="w-[350px] min-h-[500px] bg-zinc-900 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
-        <div>
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold">
-              Text Detection
-            </CardTitle>
-            <CardDescription className="text-lg">
-              Analyze any written content instantly.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-6">
-            <div className="flex flex-col space-y-2">
-              <Label htmlFor="text" className="text-lg">
-                Enter Text
-              </Label>
-              <Textarea
-                id="text"
-                rows={6}
-                placeholder="Paste your content here..."
-                className="bg-zinc-800 text-white h-42 "
-              />
+      <div>
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold">Text Detection</CardTitle>
+          <CardDescription className="text-lg">Analyze any written content instantly.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-6">
+          <div className="flex flex-col space-y-2">
+            <Label htmlFor="text" className="text-lg">Enter Text</Label>
+            <Textarea
+              id="text"
+              rows={6}
+              placeholder="Paste your content here..."
+              className="bg-zinc-800 text-white h-42"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </div>
+          {textResult && (
+            <div
+              className={`font-medium border p-3 rounded-md text-lg ${
+                textResult.toLowerCase().includes("no harmful") ? "text-green-400 bg-zinc-900" : "text-red-400 bg-zinc-800"
+              }`}
+            >
+              {textResult}
             </div>
-            {textResult && (
-              <div className="text-green-400 font-medium border p-3 rounded-md bg-zinc-900 text-lg">
-                {textResult}
-              </div>
-            )}
-          </CardContent>
-        </div>
-        <CardFooter className="flex justify-end p-4">
-          <ShinyButton
-            className="px-6 py-2 text-xl"
-            onClick={() => setTextResult("No harmful content found")}
-          >
-            Detect
-          </ShinyButton>
-        </CardFooter>
-      </Card>
-
+          )}
+        </CardContent>
+      </div>
+      <CardFooter className="flex justify-end p-4">
+        <ShinyButton className="px-6 py-2 text-xl" onClick={handleTextDetect}>
+          Detect
+        </ShinyButton>
+      </CardFooter>
+    </Card>
       {/* Image Detection */}
       <Card className="w-[350px] min-h-[500px] bg-zinc-900 border-zinc-800 text-white flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
         <div>
