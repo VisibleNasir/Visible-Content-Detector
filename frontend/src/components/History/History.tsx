@@ -1,116 +1,230 @@
+import React, { useState, useEffect, JSX } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Image, Video} from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FileText, Image as ImageIcon, Video, AlertCircle } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import Navbar from "../Navbar";
 
-const dummyHistory = [
+// Interfaces for type safety
+interface HistoryItem {
+  id: string;
+  type: "Text" | "Image" | "Video";
+  icon: JSX.Element;
+  content: string;
+  result: "Harmful" | "Safe";
+  date: string;
+}
+
+interface HistoryProps {
+  historyItems?: HistoryItem[];
+}
+
+// Mock data (replace with API in production)
+const dummyHistory: HistoryItem[] = [
   {
+    id: "1",
     type: "Text",
-    icon: <FileText className="w-6 h-6 text-blue-500" />,
+    icon: <FileText className="w-5 h-5 text-blue-400" />,
     content: "This is a test message with inappropriate content.",
     result: "Harmful",
-    date: "2025-04-24 10:30 AM",
+    date: "2025-04-24T10:30:00",
   },
   {
+    id: "2",
     type: "Image",
-    icon: <Image className="w-6 h-6 text-green-500" />,
+    icon: <ImageIcon className="w-5 h-5 text-green-400" />,
     content: "screenshot_001.png",
     result: "Safe",
-    date: "2025-04-23 08:15 PM",
+    date: "2025-04-23T20:15:00",
   },
   {
+    id: "3",
     type: "Video",
-    icon: <Video className="w-6 h-6 text-yellow-500" />,
+    icon: <Video className="w-5 h-5 text-yellow-400" />,
     content: "user_clip.mp4",
     result: "Harmful",
-    date: "2025-04-22 06:00 PM",
+    date: "2025-04-22T18:00:00",
   },
 ];
 
-const History = () => {
+// Format date using date-fns
+const formatDate = (dateString: string): string => {
+  try {
+    return format(new Date(dateString), "MMM d, yyyy, h:mm a");
+  } catch {
+    return dateString;
+  }
+};
+
+// Reusable HistoryItem component
+interface HistoryItemProps {
+  item: HistoryItem;
+}
+
+const HistoryItem: React.FC<HistoryItemProps> = ({ item }) => (
+  <div className="relative pl-10 pb-8 last:pb-0">
+    {/* Timeline dot and line */}
+    <div className="absolute left-0 top-2 w-5 h-5 rounded-full bg-zinc-700 border-2 border-zinc-500 shadow-sm" />
+    <div className="absolute left-2 top-7 bottom-0 w-1 bg-gradient-to-b from-zinc-700 to-zinc-600" />
+    
+    <Card
+      className="bg-gradient-to-br from-zinc-900 to-zinc-850 border border-zinc-800 hover:shadow-md transition-all duration-300"
+      role="region"
+      aria-labelledby={`history-item-${item.id}`}
+    >
+      <CardContent className="p-5 flex items-center gap-4">
+        <div className="flex-shrink-0">{item.icon}</div>
+        <div className="flex-1 min-w-0">
+          <h3
+            id={`history-item-${item.id}`}
+            className="text-base font-bold text-zinc-100 truncate"
+          >
+            {item.type}: {item.content}
+          </h3>
+          <div className="text-xs text-zinc-400 mt-1">
+            <span className="font-medium text-zinc-300">Date:</span> {formatDate(item.date)}
+          </div>
+        </div>
+        <Badge
+          variant={item.result === "Harmful" ? "destructive" : "default"}
+          className={cn(
+            item.result === "Harmful"
+              ? "bg-red-600 text-white"
+              : "bg-green-600 text-white",
+            "text-xs font-semibold px-2 py-1"
+          )}
+        >
+          {item.result}
+        </Badge>
+        <Button
+          variant="outline"
+          size="sm"
+          asChild
+          className="border-zinc-700 text-zinc-100 hover:bg-zinc-800 hover:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 focus:ring-offset-zinc-950 transition-colors duration-200"
+        >
+          <Link to={`/history/${item.id}`} aria-label={`View details for ${item.type} detection`}>
+            Details
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+// Animation variants for staggered effect
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeInOut" } },
+};
+
+// Main History component
+const History: React.FC<HistoryProps> = ({ historyItems = dummyHistory }) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate async data fetching
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 800); // Slightly faster for polish
+  }, []);
+
+  // Handler for New Detection button
+  const handleNewDetection = () => {
+    console.log("Navigating to /detect"); // Debugging log, remove in production
+    navigate("/detect");
+  };
 
   return (
-    <div className="min-h-screen w-screen flex flex-col bg-zinc-950">
-      {/* Navbar */}
-      <Navbar/>
+    <div className="min-h-screen w-screen flex flex-col bg-zinc-950 text-zinc-100 ">
+      <Navbar />
+      <main className="max-w-5xl mx-auto p-8 sm:p-12 w-full ">
+        {/* Header */}
+        {isLoading ? (
+          <Skeleton className="h-10 w-48 mx-auto mb-12 bg-zinc-800 rounded-lg" />
+        ) : (
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="text-3xl sm:text-4xl font-bold text-center mb-12 text-zinc-100 "
+          >
+            Detection History
+          </motion.h1>  
+        )}
 
-
-      {/* Content */}
-      <div className="max-w-6xl mx-auto p-6 text-white">
-        <h1 className="text-4xl font-bold text-center mb-10">Detection History</h1>
-
-        <div className="flex justify-center mb-10">
-          <Button onClick={() => navigate("/detect")} className="text-white">
-            Run New Detection
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {dummyHistory.map((item, index) => (
-            <Card key={index} className="bg-muted/50 border border-zinc-700">
-              <CardContent className="p-6 space-y-3">
-                <div className="flex items-center gap-4">
-                  {item.icon}
-                  <h2 className="text-lg font-semibold">{item.type} Detection</h2>
-                </div>
-
-                <div className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">Content:</span> {item.content}
-                </div>
-
-                <div className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">Result:</span>{" "}
-                  <Badge
-                    variant={item.result === "Harmful" ? "destructive" : "secondary"}
-                  >
-                    {item.result}
-                  </Badge>
-                </div>
-
-                <div className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">Date:</span> {item.date}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-      {/* Footer */}
-        <footer className="flex align-center justify-center text-white py-6 text-center border-t border-zinc-700">
-          <aside className="flex gap-2 items-center">
-            <svg
-              width="36"
-              height="36"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              fillRule="evenodd"
-              clipRule="evenodd"
-              className="fill-current"
+        {/* History Timeline */}
+        {isLoading ? (
+          <div className="space-y-6">
+            {[...Array(3)].map((_, idx) => (
+              <Skeleton
+                key={idx}
+                className="h-20 w-full bg-zinc-800 rounded-lg  "
+              />
+            ))}
+          </div>
+        ) : historyItems.length === 0 ? (
+          <div className=" text-center bg-gradient-to-br from-zinc-900 to-zinc-850 border border-zinc-800 rounded-lg p-8">
+            <AlertCircle className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
+            <p className="text-base text-zinc-300 mb-6">
+              No detection history available. Start by running a new detection.
+            </p>
+            <Button
+              onClick={handleNewDetection}
+              className="bg-zinc-200 text-zinc-950 px-6 py-3 rounded-lg font-semibold hover:bg-zinc-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
             >
-              <path d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z" />
-            </svg>
-            <nav className="flex align-center justify-center gap-4 ml-4">
-              <a
-                href="https://www.youtube.com/@VisibleNasir"
-                aria-label="YouTube"
+              Detect New Content
+            </Button>
+          </div>
+        ) : (
+          <>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="relative"
+            >
+              {historyItems.map((item) => (
+                <motion.div key={item.id} variants={itemVariants}>
+                  <HistoryItem item={item} />
+                </motion.div>
+              ))}
+            </motion.div>
+            {/* Centered New Detection Button */}
+            {isLoading ? null : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+                className="flex justify-center mt-12"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  className="fill-current"
+                <Button
+                  onClick={handleNewDetection}
+                  className="bg-zinc-200 text-zinc-950 px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-zinc-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
+                  aria-label="Run New Detection"
                 >
-                  <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-                </svg>
-              </a>
-            </nav>
-            <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
-          </aside>
-        </footer>
+                  Detect New Content
+                </Button>
+              </motion.div>
+            )}
+          </>
+        )}
+      </main>
     </div>
   );
 };

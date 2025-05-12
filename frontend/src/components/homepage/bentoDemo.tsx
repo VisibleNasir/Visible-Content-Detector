@@ -1,20 +1,17 @@
 import { FileTextIcon } from "@radix-ui/react-icons";
 import {
-  BellIcon,
   Share2Icon,
   SearchIcon,
   Instagram,
   Github,
   Linkedin,
 } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { BentoCard, BentoGrid } from "../magicui/bento-grid";
 import { Marquee } from "../magicui/marquee";
-import AnimatedListDemo from "../ui/animated-list-demo";
 import { motion } from "framer-motion";
 
-// Replace this with your actual links
+// Social links for the project
 const socials = [
   {
     name: "Instagram",
@@ -26,7 +23,7 @@ const socials = [
     name: "GitHub",
     icon: Github,
     href: "https://github.com/VisibleNasir",
-    color: "text-gray-800 hover:text-black",
+    color: "text-zinc-100 hover:text-zinc-200",
   },
   {
     name: "LinkedIn",
@@ -36,41 +33,38 @@ const socials = [
   },
 ];
 
-// Mock data for scanHistory and statusIcons
+// Mock data for scanHistory
 const scanHistory = [
-  { name: "Scan 1", body: "No harmful content detected.", status: "safe" },
-  {
-    name: "Scan 2",
-    body: "Potential harmful content found.",
-    status: "warning",
-  },
+  { name: "Text Scan", body: "No harmful content detected.", status: "safe" },
+  { name: "Image Scan", body: "Harmful content detected.", status: "warning" },
+  { name: "Video Scan", body: "No harmful content detected.", status: "safe" },
 ];
 
 const statusIcons = {
   safe: FileTextIcon,
-  warning: BellIcon,
+  warning: FileTextIcon,
 };
 
 const statusColors = {
   safe: {
-    bg: "bg-green-100",
-    border: "border-green-300",
-    text: "text-green-700",
+    bg: "bg-green-400/20",
+    border: "border-green-400/50",
+    text: "text-green-400",
   },
   warning: {
-    bg: "bg-red-400",
-    border: "border-red-700",
-    text: "text-zinc-950",
+    bg: "bg-red-400/20",
+    border: "border-red-400/50",
+    text: "text-red-400",
   },
 };
 
 const features = [
   {
     Icon: FileTextIcon,
-    name: "User History",
-    description: "See your past scans with AI-generated safety insights.",
+    name: "Scan History",
+    description: "Review your past text, image, and video scans with AI safety insights.",
     href: "/history",
-    cta: "View history",
+    cta: "View History",
     className: "col-span-3 lg:col-span-1",
     background: (
       <Marquee
@@ -108,22 +102,31 @@ const features = [
     ),
   },
   {
-    Icon: BellIcon,
-    name: "Real-time Alerts",
-    description: "Get instant alerts when harmful content is detected.",
-    href: "/alerts",
-    cta: "Configure alerts",
+    Icon: Github,
+    name: "Contribute",
+    description: "Join our open-source project to enhance AI-powered harmful content detection.",
+    href: "https://github.com/VisibleNasir/Visible-Content-Detector",
+    cta: "Contribute Now",
     className: "col-span-3 lg:col-span-2",
     background: (
-      <AnimatedListDemo className="absolute right-2 top-4 h-[300px] w-full scale-75 border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-90" />
+      <div className="absolute right-0 top-10 flex h-full w-full items-center justify-center">
+        <div className="rounded-xl bg-gradient-to-br from-zinc-700/30 to-zinc-900/30 p-6 text-center shadow-lg backdrop-blur-sm">
+          <p className="text-sm font-semibold text-zinc-100">
+            Fork, Star, or Submit a PR
+          </p>
+          <p className="text-xs text-zinc-400 mt-2">
+            Help us improve Visible Content Detector
+          </p>
+        </div>
+      </div>
     ),
   },
   {
     Icon: Share2Icon,
-    name: "Our Socials",
-    description: "Follow us and stay connected on your favorite platforms.",
+    name: "Connect With Us",
+    description: "Follow our socials for updates and community engagement.",
     href: "#",
-    cta: "Visit profiles",
+    cta: "Join Our Community",
     className: "col-span-3 lg:col-span-2",
     background: (
       <div className="absolute top-6 left-6 flex gap-5 items-center justify-center">
@@ -139,12 +142,13 @@ const features = [
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.2 }}
               whileHover={{ scale: 1.05 }}
-              className="group flex items-center gap-3 rounded-md p-2 transition-all duration-300 hover:bg-white/10"
+              className="group flex items-center gap-3 rounded-md p-2 transition-all duration-300 hover:bg-zinc-800"
+              aria-label={`Visit our ${social.name} profile`}
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800">
                 <Icon className={cn("h-5 w-5", social.color)} />
               </div>
-              <span className="text-sm font-medium text-white group-hover:underline transition-all duration-300">
+              <span className="text-sm font-medium text-zinc-100 group-hover:underline transition-all duration-300">
                 {social.name}
               </span>
             </motion.a>
@@ -155,19 +159,19 @@ const features = [
   },
   {
     Icon: SearchIcon,
-    name: "Content Analyzer",
-    description: "Upload any file to scan for harmful content using AI.",
+    name: "Content Scanner",
+    description: "Scan text, images, or videos for harmful content with AI.",
     className: "col-span-3 lg:col-span-1",
-    href: "/",
-    cta: "Scan now",
+    href: "/detect",
+    cta: "Start Scanning",
     background: (
-      <div  className="absolute right-0 top-10 flex h-full w-full items-center justify-center">
-        <div className="rounded-xl bg-gradient-to-br from-red-500/30 to-yellow-500/30 p-6 text-center shadow-lg backdrop-blur-sm">
-          <p className="text-sm font-semibold text-white">
-            Drag & drop or select a file
+      <div className="absolute right-0 top-10 flex h-full w-full items-center justify-center">
+        <div className="rounded-xl bg-gradient-to-br from-zinc-700/30 to-zinc-900/30 p-6 text-center shadow-lg backdrop-blur-sm">
+          <p className="text-sm font-semibold text-zinc-100">
+            Upload text, image, or video
           </p>
-          <p className="text-xs text-white/70 mt-2">
-            AI will automatically scan for harmful content.
+          <p className="text-xs text-zinc-400 mt-2">
+            AI-powered scanning for harmful content
           </p>
         </div>
       </div>
@@ -177,7 +181,7 @@ const features = [
 
 export function HarmfulDetectionFeatureGrid() {
   return (
-    <BentoGrid>
+    <BentoGrid className="bg-zinc-950 p-4 sm:p-6 lg:p-8">
       {features.map((feature, idx) => (
         <BentoCard key={idx} {...feature} />
       ))}

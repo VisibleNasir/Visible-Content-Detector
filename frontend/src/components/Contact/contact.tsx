@@ -41,19 +41,7 @@ const Contact = () => {
 
       {/* Footer */}
       <footer className="flex align-center justify-center text-white py-6 text-center border-t border-zinc-700">
-        <aside className="flex gap-2 items-center">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M22.672 15.226l-2.432.811...z" />
-          </svg>
-          <nav className="flex align-center justify-center gap-4 ml-4">
-            <a href="https://www.youtube.com/@VisibleNasir" aria-label="YouTube">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="fill-current">
-                <path d="M19.615 3.184c-3.604-.246-11.631...z" />
-              </svg>
-            </a>
-          </nav>
-          <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
-        </aside>
+        
       </footer>
     </div>
   );
