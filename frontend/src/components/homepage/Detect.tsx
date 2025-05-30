@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, ReactNode } from "react";
 import {
   Card,
   CardHeader,
@@ -8,50 +8,155 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShinyButton } from "@/components/magicui/shiny-button";
-import axios from "axios";
+
+interface PredictionResult {
+  result: string;
+  predicted_class: ReactNode;
+  confidence_scores: { [label: string]: number };
+  error: string | null;
+}
 
 const Detect = () => {
-  const [imageResult, setImageResult] = useState("");
-  const [videoResult, setVideoResult] = useState("");
-  const [text, setText] = useState("");
-  const [textResult, setTextResult] = useState("");
-  const [loadingText, setLoadingText] = useState(false);
-  const [loadingImage, setLoadingImage] = useState(false);
-  const [loadingVideo, setLoadingVideo] = useState(false);
+  const [videoResult, setVideoResult] = useState<PredictionResult | null>(null);
+  const [loadingVideo, setLoadingVideo] = useState<boolean>(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [imageResult, setImageResult] = useState<PredictionResult | null>(null);
+  const [loadingImage, setLoadingImage] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [text, setText] = useState<string>('');
+  const [textResult, setTextResult] = useState<PredictionResult | null>(null);
+  const [loadingText, setLoadingText] = useState<boolean>(false);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+      setImageResult(null);
+      setError(null);
+    }
+  };
+
+  const handleImageDetect = async () => {
+    if (!file) {
+      setError("Please select an image");
+      setImageResult(null);
+      return;
+    }
+
+    setLoadingImage(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:8000/predict/", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get prediction");
+      }
+
+      const result: PredictionResult = await response.json();
+      setImageResult(result);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      setImageResult({
+        result: `Error: ${errorMessage}`,
+        predicted_class: null,
+        confidence_scores: {},
+        error: errorMessage,
+      });
+      setError(errorMessage);
+    } finally {
+      setLoadingImage(false);
+    }
+  };
+
+  const handleReset = () => {
+    setFile(null);
+    setImageResult(null);
+    setError(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleTextDetect = async () => {
+    if (!text.trim()) {
+      setTextResult({
+        result: "Please enter some text to analyze.",
+        predicted_class: null,
+        confidence_scores: {},
+        error: "No text provided",
+      });
+      return;
+    }
+
     setLoadingText(true);
     try {
-      const response = await axios.post<{ result: string }>("http://localhost:3000/predict-text", {
-        text,
+      const response = await fetch('http://localhost:5000/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
       });
-      setTextResult(response.data.result);
+
+      const data: PredictionResult = await response.json();
+      if (response.ok) {
+        setTextResult(data);
+      } else {
+        setTextResult({
+          result: `Error: ${data.error}`,
+          predicted_class: null,
+          confidence_scores: {},
+          error: data.error,
+        });
+      }
     } catch (error) {
-      console.error("Error detecting text:", error);
-      setTextResult("Error processing request.");
+      const errorMessage = error instanceof Error ? error.message : "Failed to connect to the server.";
+      setTextResult({
+        result: `Error: ${errorMessage}`,
+        predicted_class: null,
+        confidence_scores: {},
+        error: errorMessage,
+      });
     } finally {
       setLoadingText(false);
     }
   };
 
-  const handleImageDetect = () => {
-    setLoadingImage(true);
-    setTimeout(() => {
-      setImageResult("Image is safe");
-      setLoadingImage(false);
-    }, 1500); // Mock API delay
-  };
-
-  const handleVideoDetect = () => {
+  const handleVideoDetect = async () => {
+    // Mock API response (replace with actual backend call)
     setLoadingVideo(true);
-    setTimeout(() => {
-      setVideoResult("No harmful content found in video");
+    try {
+      // Simulate API call (replace with actual fetch to your video backend)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setVideoResult({
+        result: "No harmful content found in video",
+        predicted_class: "no harmful",
+        confidence_scores: { "no harmful": 0.95, "harmful": 0.05 },
+        error: null,
+      });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      setVideoResult({
+        result: `Error: ${errorMessage}`,
+        predicted_class: null,
+        confidence_scores: {},
+        error: errorMessage,
+      });
+    } finally {
       setLoadingVideo(false);
-    }, 1500); // Mock API delay
+    }
   };
 
   return (
@@ -85,12 +190,27 @@ const Detect = () => {
             ) : textResult ? (
               <div
                 className={`font-medium border p-3 rounded-md text-lg ${
-                  textResult.toLowerCase().includes("no harmful")
-                    ? "text-green-400 bg-zinc-900"
-                    : "text-red-400 bg-zinc-800"
+                  textResult.error || textResult.result.toLowerCase().includes('error')
+                    ? 'text-red-400 bg-zinc-800'
+                    : textResult.result.toLowerCase().includes('no harmful')
+                    ? 'text-green-400 bg-zinc-900'
+                    : 'text-red-400 bg-zinc-800'
                 }`}
               >
-                {textResult}
+                {textResult.error ? (
+                  <p>{textResult.result}</p>
+                ) : (
+                  <>
+                    <p>{textResult.result}</p>
+                    <p>Predicted Class: {textResult.predicted_class}</p>
+                    <p>Confidence Scores:</p>
+                    <ul className="list-disc pl-5">
+                      {Object.entries(textResult.confidence_scores).map(([label, score]) => (
+                        <li key={label}>{label}: {(score * 100).toFixed(2)}%</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
             ) : null}
           </CardContent>
@@ -107,9 +227,7 @@ const Detect = () => {
         <div>
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">Image Detection</CardTitle>
-            <CardDescription className="text-lg">
-              Upload an image to detect harmful content.
-            </CardDescription>
+            <CardDescription className="text-lg">Upload an image to detect harmful content.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             <div className="flex flex-col space-y-2">
@@ -118,6 +236,8 @@ const Detect = () => {
                 id="image"
                 type="file"
                 accept="image/*"
+                onChange={handleFileChange}
+                ref={fileInputRef}
                 className="bg-zinc-800 text-white h-30 file:text-black file:bg-purple-200 file:px-6 file:rounded-md"
               />
             </div>
@@ -129,16 +249,48 @@ const Detect = () => {
                 </p>
               </div>
             ) : imageResult ? (
-              <div className="text-green-400 font-medium border p-3 rounded-md bg-zinc-900 text-lg">
-                {imageResult}
+              <div
+                className={`font-medium border p-3 rounded-md text-lg ${
+                  imageResult.error || imageResult.result.toLowerCase().includes('error')
+                    ? 'text-red-400 bg-zinc-800'
+                    : imageResult.result.toLowerCase().includes('no harmful')
+                    ? 'text-green-400 bg-zinc-900'
+                    : 'text-red-400 bg-zinc-800'
+                }`}
+              >
+                {imageResult.error ? (
+                  <p>{imageResult.result}</p>
+                ) : (
+                  <>
+                    <p>{imageResult.result}</p>
+                    <p>Predicted Class: {imageResult.predicted_class}</p>
+                    <p>Confidence Scores:</p>
+                    <ul className="list-disc pl-5">
+                      {Object.entries(imageResult.confidence_scores).map(([label, score]) => (
+                        <li key={label}>{label}: {(score * 100).toFixed(2)}%</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
+            ) : error ? (
+              <p className="text-red-400 font-medium border p-3 rounded-md bg-zinc-900 text-lg">
+                {error}
+              </p>
             ) : null}
           </CardContent>
         </div>
-        <CardFooter className="flex justify-end p-4">
-          <ShinyButton className="px-6 py-2 text-xl" onClick={handleImageDetect}>
+        <CardFooter className="flex justify-end p-4 gap-4">
+          <Button className="px-6 py-2 text-xl bg-gray-500" onClick={handleReset}>
+            Reset
+          </Button>
+          <Button
+            className="px-6 py-2 text-xl bg-blue-500 disabled:bg-blue-300"
+            onClick={handleImageDetect}
+            disabled={loadingImage || !file}
+          >
             Detect
-          </ShinyButton>
+          </Button>
         </CardFooter>
       </Card>
 
@@ -147,9 +299,7 @@ const Detect = () => {
         <div>
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">Video Detection</CardTitle>
-            <CardDescription className="text-lg">
-              Submit a video file to scan for unsafe content.
-            </CardDescription>
+            <CardDescription className="text-lg">Submit a video file to scan for unsafe content.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             <div className="flex flex-col space-y-2">
@@ -169,8 +319,29 @@ const Detect = () => {
                 </p>
               </div>
             ) : videoResult ? (
-              <div className="text-green-400 font-medium border p-3 rounded-md bg-zinc-900 text-lg">
-                {videoResult}
+              <div
+                className={`font-medium border p-3 rounded-md text-lg ${
+                  videoResult.error || videoResult.result.toLowerCase().includes('error')
+                    ? 'text-red-400 bg-zinc-800'
+                    : videoResult.result.toLowerCase().includes('no harmful')
+                    ? 'text-green-400 bg-zinc-900'
+                    : 'text-red-400 bg-zinc-800'
+                }`}
+              >
+                {videoResult.error ? (
+                  <p>{videoResult.result}</p>
+                ) : (
+                  <>
+                    <p>{videoResult.result}</p>
+                    <p>Predicted Class: {videoResult.predicted_class}</p>
+                    <p>Confidence Scores:</p>
+                    <ul className="list-disc pl-5">
+                      {Object.entries(videoResult.confidence_scores).map(([label, score]) => (
+                        <li key={label}>{label}: {(score * 100).toFixed(2)}%</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
             ) : null}
           </CardContent>

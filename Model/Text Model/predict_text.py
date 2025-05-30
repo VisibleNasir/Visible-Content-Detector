@@ -1,95 +1,123 @@
 import pandas as pd
 import numpy as np
 import torch
-from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-import matplotlib.pyplot as plt
-import seaborn as sns
+import joblib
+import re
+import string
+import nltk
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from catboost import CatBoostClassifier
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from scipy.special import softmax
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import os
 
-# Load dataset
-df = pd.read_csv("text_dataset.csv")
+app = Flask(__name__)
+CORS(app)
 
-# Features and labels
-X = df["text"]
-y = df["label"].astype('category').cat.codes  # Convert labels to numeric
-label_names = df["label"].astype('category').cat.categories
+# Ensure NLTK data is available
+try:
+    nltk.download('stopwords', quiet=True)
+    nltk.download('punkt', quiet=True)
+    nltk.download('punkt_tab', quiet=True)
+    nltk.download('wordnet', quiet=True)
+except Exception as e:
+    print(f"Error downloading NLTK data: {e}")
+    exit()
 
-# Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+# Text preprocessing function
+def clean_text(text):
+    if not isinstance(text, str):
+        return ""
+    try:
+        text = text.lower()
+        text = re.sub(r"http\S+|www\S+|https\S+|@\w+|#\w+", "", text, flags=re.MULTILINE)
+        text = re.sub(r'\d+', '', text)
+        text = text.translate(str.maketrans('', '', string.punctuation))
+        tokens = word_tokenize(text)
+        stop_words = set(stopwords.words('english'))
+        tokens = [word for word in tokens if word not in stop_words]
+        return " ".join(tokens)
+    except Exception as e:
+        print(f"Error in clean_text: {e}")
+        return ""
 
-# Load BERT tokenizer and model
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=len(label_names))
+# Define paths to model files
+MODEL_PATH = "harmful_text_roberta_model"
+CATBOOST_MODEL_PATH = "harmful_text_catboost_model.cbm"
+VECTORIZER_PATH = "tfidf_vectorizer.pkl"
 
-# Tokenize data
-def tokenize_data(texts, labels):
-    encodings = tokenizer(texts.tolist(), truncation=True, padding=True, max_length=128)
-    return {'input_ids': encodings['input_ids'], 'attention_mask': encodings['attention_mask'], 'labels': labels.tolist()}
+# Load models and vectorizer
+try:
+    if not os.path.exists(MODEL_PATH):
+        raise FileNotFoundError(f"Model directory '{MODEL_PATH}' does not exist.")
+    if not os.path.exists(CATBOOST_MODEL_PATH):
+        raise FileNotFoundError(f"CatBoost model '{CATBOOST_MODEL_PATH}' does not exist.")
+    if not os.path.exists(VECTORIZER_PATH):
+        raise FileNotFoundError(f"Vectorizer '{VECTORIZER_PATH}' does not exist.")
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+    roberta_model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+    catboost_model = CatBoostClassifier().load_model(CATBOOST_MODEL_PATH)
+    vectorizer = joblib.load(VECTORIZER_PATH)
+    print("Models and vectorizer loaded successfully.")
+except Exception as e:
+    print(f"Error loading models: {e}")
+    exit()
 
-train_dataset = tokenize_data(X_train, y_train)
-test_dataset = tokenize_data(X_test, y_test)
+# Label names
+label_names = ["no harmful", "harmful"]
 
-# Convert to torch dataset
-class TextDataset(torch.utils.data.Dataset):
-    def __init__(self, encodings):
-        self.encodings = encodings
+# Prediction function
+def predict_text(text):
+    cleaned_text = clean_text(text)
+    if not cleaned_text.strip():
+        return {
+            "result": "Error: Empty text after preprocessing.",
+            "predicted_class": None,
+            "confidence_scores": {},
+            "error": "Empty text"
+        }
 
-    def __getitem__(self, idx):
-        item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
-        return item
+    # RoBERTa prediction
+    encodings = tokenizer(cleaned_text, truncation=True, padding=True, max_length=128, return_tensors="pt")
+    with torch.no_grad():
+        outputs = roberta_model(**encodings)
+    roberta_probs = softmax(outputs.logits.cpu().numpy(), axis=1)
 
-    def __len__(self):
-        return len(self.encodings['labels'])
+    # CatBoost prediction
+    text_vec = vectorizer.transform([cleaned_text])
+    catboost_probs = catboost_model.predict_proba(text_vec)
 
-train_dataset = TextDataset(train_dataset)
-test_dataset = TextDataset(test_dataset)
+    # Ensemble weights
+    roberta_weight = 0.6
+    catboost_weight = 0.4
+    ensemble_probs = roberta_weight * roberta_probs + catboost_weight * catboost_probs
+    predicted_label = np.argmax(ensemble_probs, axis=1)[0]
+    confidence = ensemble_probs[0][predicted_label]
+    confidence_scores = {label_names[i]: float(ensemble_probs[0][i]) for i in range(len(label_names))}
 
-# Training arguments
-training_args = TrainingArguments(
-    output_dir='./results',
-    num_train_epochs=3,
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=16,
-    warmup_steps=500,
-    weight_decay=0.01,
-    logging_dir='./logs',
-    logging_steps=10,
-    evaluation_strategy="epoch",
-    save_strategy="epoch",
-    load_best_model_at_end=True,
-)
+    return {
+        "result": f"{label_names[predicted_label].capitalize()} content detected (Confidence: {confidence:.2%})",
+        "predicted_class": label_names[predicted_label],
+        "confidence_scores": confidence_scores,
+        "error": None
+    }
 
-# Trainer
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=train_dataset,
-    eval_dataset=test_dataset,
-)
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    text = data.get('text', '')
+    if not text:
+        return jsonify({
+            "result": "Error: No text provided",
+            "predicted_class": None,
+            "confidence_scores": {},
+            "error": "No text provided"
+        }), 400
+    result = predict_text(text)
+    return jsonify(result)
 
-# Train model
-trainer.train()
-
-# Evaluate
-predictions = trainer.predict(test_dataset)
-y_pred = np.argmax(predictions.predictions, axis=1)
-print("\nClassification Report:")
-print(classification_report(y_test, y_pred, target_names=label_names))
-
-# Confusion matrix
-conf_matrix = confusion_matrix(y_test, y_pred)
-plt.figure(figsize=(10, 8))
-sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Oranges", xticklabels=label_names, yticklabels=label_names)
-plt.title("Confusion Matrix")
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.tight_layout()
-plt.savefig("confusion_matrix_bert.png")
-plt.close()
-
-# Save model
-model.save_pretrained("harmful_text_bert_model")
-tokenizer.save_pretrained("harmful_text_bert_model")
-
-print("BERT Model Trained and Saved Successfully!")
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
